@@ -9,10 +9,10 @@ echo "Syncing venv to workspace, please wait..."
 rsync -au --remove-source-files /venv/ /workspace/venv/
 rm -rf /venv
 
-# Sync audiocraft to workspace to support Network volumes
-echo "Syncing audiocraft to workspace, please wait..."
-rsync -au --remove-source-files /audiocraft/ /workspace/audiocraft/
-rm -rf /audiocraft
+# Sync text-generation-webui to workspace to support Network volumes
+echo "Syncing text-generation-webui to workspace, please wait..."
+rsync -au --remove-source-files /text-generation-webui/ /workspace/text-generation-webui/
+rm -rf /text-generation-webui
 
 if [[ ${PUBLIC_KEY} ]]
 then
@@ -49,16 +49,16 @@ then
     echo "Auto launching is disabled so the application will not be started automatically"
     echo "You can launch it manually:"
     echo ""
-    echo "   cd /workspace/audiocraft"
+    echo "   cd /workspace/text-generation-webui"
     echo "   deactivate && source /workspace/venv/activate"
-    echo "   ./python3 app.py --listen 0.0.0.0 --server_port 3000"
+    echo "   ./start_chatbot_server.sh"
 else
     mkdir -p /workspace/logs
-    echo "Starting audiocraft"
+    echo "Starting text-generation-webui"
     source ${VENV}/bin/activate
-    cd /workspace/audiocraft && nohup python3 app.py --listen 0.0.0.0 --server_port 3000 > /workspace/logs/audiocraft.log &
-    echo "audiocraft started"
-    echo "Log file: /workspace/logs/audiocraft.log"
+    cd /workspace/text-generation-webui && nohup ./start_chatbot_server.sh > /workspace/logs/textgen.log &
+    echo "text-generation-webui started"
+    echo "Log file: /workspace/logs/textgen.log"
     deactivate
 fi
 
