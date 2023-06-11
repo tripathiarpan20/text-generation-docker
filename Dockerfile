@@ -96,6 +96,8 @@ RUN mv /workspace/text-generation-webui /text-generation-webui
 # Copy startup scripts for text-generation
 COPY start_chatbot_server.sh /text-generation-webui/
 COPY start_textgen_server.sh /text-generation-webui/
+RUN chmod a+x /text-generation-webui/start_chatbot_server.sh
+RUN chmod a+x /text-generation-webui/start_textgen_server.sh
 
 # Set up the container startup script
 COPY start.sh /start.sh
