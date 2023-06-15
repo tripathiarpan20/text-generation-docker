@@ -78,10 +78,10 @@ RUN source ${VENV}/bin/activate && \
     pip3 install -r requirements.txt && \
     deactivate
 
-# Download model
-RUN source ${VENV}/bin/activate && \
-    cd /workspace/text-generation-webui && \
-    python3 download-model.py PygmalionAI/pygmalion-6b
+# Download model - people prefer to download their own models
+#RUN source ${VENV}/bin/activate && \
+#    cd /workspace/text-generation-webui && \
+#    python3 download-model.py PygmalionAI/pygmalion-6b
 
 # Install runpodctl
 RUN wget https://github.com/runpod/runpodctl/releases/download/v1.10.0/runpodctl-linux-amd -O runpodctl && \
