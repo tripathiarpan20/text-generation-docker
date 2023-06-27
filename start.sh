@@ -5,13 +5,11 @@ echo "Container is running"
 
 # Sync venv to workspace to support Network volumes
 echo "Syncing venv to workspace, please wait..."
-rsync -au --remove-source-files /venv/ /workspace/venv/
-rm -rf /venv
+rsync -au /venv/ /workspace/venv/
 
 # Sync text-generation-webui to workspace to support Network volumes
 echo "Syncing text-generation-webui to workspace, please wait..."
-rsync -au --remove-source-files /text-generation-webui/ /workspace/text-generation-webui/
-rm -rf /text-generation-webui
+rsync -au /text-generation-webui/ /workspace/text-generation-webui/
 
 # Fix the venv to make it work from /workspace
 echo "Fixing venv..."
