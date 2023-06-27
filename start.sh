@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-export VENV=/workspace/venv
 export PYTHONUNBUFFERED=1
 
 echo "Container is running"
@@ -13,6 +12,10 @@ rm -rf /venv
 echo "Syncing text-generation-webui to workspace, please wait..."
 rsync -au --remove-source-files /text-generation-webui/ /workspace/text-generation-webui/
 rm -rf /text-generation-webui
+
+# Fix the venv to make it work from /workspace
+echo "Fixing venv..."
+/fix_venv.sh /venv /workspace/venv
 
 if [[ ${PUBLIC_KEY} ]]
 then
@@ -56,7 +59,7 @@ else
     mkdir -p /workspace/logs
     echo "Starting text-generation-webui"
     source ${VENV}/bin/activate
-    cd /workspace/text-generation-webui && nohup ./start_chatbot_server.sh > /workspace/logs/textgen.log &
+    cd /workspace/text-generation-webui && nohup ./start_chatbot_server.sh > /workspace/logs/textgen.log 2>&1 &
     echo "text-generation-webui started"
     echo "Log file: /workspace/logs/textgen.log"
     deactivate
