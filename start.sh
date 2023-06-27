@@ -34,7 +34,7 @@ then
     ln -sf /root/welcome.ipynb /workspace
 
     cd /
-    source ${VENV}/bin/activate
+    source /workspace/venv/bin/activate
     nohup jupyter lab --allow-root \
         --no-browser \
         --port=8888 \
@@ -53,12 +53,12 @@ then
     echo "You can launch it manually:"
     echo ""
     echo "   cd /workspace/text-generation-webui"
-    echo "   deactivate && source /workspace/venv/activate"
+    echo "   deactivate && source /workspace/venv/bin/activate"
     echo "   ./start_chatbot_server.sh"
 else
     mkdir -p /workspace/logs
     echo "Starting text-generation-webui"
-    source ${VENV}/bin/activate
+    source /workspace/venv/bin/activate
     cd /workspace/text-generation-webui && nohup ./start_chatbot_server.sh > /workspace/logs/textgen.log 2>&1 &
     echo "text-generation-webui started"
     echo "Log file: /workspace/logs/textgen.log"
