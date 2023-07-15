@@ -21,6 +21,7 @@ RUN apt update && \
         python3-tk \
         bash \
         git \
+        git-lfs \
         ncdu \
         nginx  \
         net-tools \
@@ -48,6 +49,8 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/* && \
     echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 
+ENV PATH="/usr/local/cuda/bin:${PATH}"
+
 # Set Python and pip
 RUN ln -s /usr/bin/python3.10 /usr/bin/python && \
     curl https://bootstrap.pypa.io/get-pip.py | python && \
@@ -70,9 +73,25 @@ RUN git clone https://github.com/oobabooga/text-generation-webui && \
     git checkout ${VERSION}
 
 # Install the dependencies for Text Generation Web UI
+# Including all extensions and exllama
 WORKDIR /text-generation-webui
 RUN source /venv/bin/activate && \
     pip3 install -r requirements.txt && \
+    bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done' && \
+    mkdir -p repositories && \
+    cd repositories && \
+    git clone https://github.com/turboderp/exllama && \
+    pip3 install -r exllama/requirements.txt && \
+    deactivate
+
+# Install AutoGPTQ, overwriting the version automatically installed by text-generation-webui
+ARG AUTOGPTQ="0.2.2"
+ENV CUDA_VERSION=""
+ENV GITHUB_ACTIONS=true
+ENV TORCH_CUDA_ARCH_LIST="8.0;8.6+PTX;8.9;9.0"
+RUN source /venv/bin/activate && \
+    pip3 uninstall -y auto-gptq && \
+    pip3 install --no-cache-dir auto-gptq==${AUTOGPTQ} && \
     deactivate
 
 # Install runpodctl
