@@ -18,6 +18,7 @@ RUN apt update && \
     apt install -y --no-install-recommends \
         software-properties-common \
         python3.10-venv \
+        python3-dev \
         python3-tk \
         bash \
         git \
