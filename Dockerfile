@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG COMMIT=22d455b0728480e9bf7ff72f1b246e12899fd891
+ARG VERSION=v1.1.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -22,6 +22,7 @@ RUN apt update && \
         bash \
         git \
         ncdu \
+        nginx  \
         net-tools \
         openssh-server \
         libglib2.0-0 \
@@ -66,18 +67,7 @@ RUN python3 -m venv /venv && \
 WORKDIR /
 RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd /text-generation-webui && \
-    git reset ${COMMIT} --hard
-
-# Install Jupyter
-RUN source /venv/bin/activate && \
-    pip3 install jupyterlab \
-      ipywidgets \
-      jupyter-archive \
-      jupyter_contrib_nbextensions \
-      gdown && \
-    jupyter contrib nbextension install --user && \
-    jupyter nbextension enable --py widgetsnbextension && \
-    deactivate
+    git checkout ${VERSION}
 
 # Install the dependencies for Text Generation Web UI
 WORKDIR /text-generation-webui
@@ -90,17 +80,31 @@ RUN wget https://github.com/runpod/runpodctl/releases/download/v1.10.0/runpodctl
     chmod a+x runpodctl && \
     mv runpodctl /usr/local/bin
 
+# Install Jupyter
+RUN pip3 install -U --no-cache-dir jupyterlab \
+        jupyterlab_widgets \
+        ipykernel \
+        ipywidgets \
+        gdown
+
+# NGINX Proxy
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY 404.html 502.html /usr/share/nginx/html/
+
+# Copy the template-readme.md
+COPY template-readme.md /usr/share/nginx/html/README.md
+
 # Copy startup scripts for text-generation
-COPY start_chatbot_server.sh /text-generation-webui/
-COPY start_textgen_server.sh /text-generation-webui/
-RUN chmod a+x /text-generation-webui/start_chatbot_server.sh
-RUN chmod a+x /text-generation-webui/start_textgen_server.sh
-COPY fix_venv.sh /fix_venv.sh
-RUN chmod +x /fix_venv.sh
+COPY start_chatbot_server.sh start_textgen_server.sh /text-generation-webui/
 
 # Set up the container startup script
-COPY start.sh /start.sh
-RUN chmod a+x /start.sh
+WORKDIR /
+COPY pre_start.sh start.sh fix_venv.sh ./
+RUN chmod +x /start.sh && \
+    chmod +x /pre_start.sh && \
+    chmod +x /fix_venv.sh && \
+    chmod a+x /text-generation-webui/start_chatbot_server.sh && \
+    chmod a+x /text-generation-webui/start_textgen_server.sh
 
 # Start the container
 SHELL ["/bin/bash", "--login", "-c"]
