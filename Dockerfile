@@ -89,7 +89,7 @@ RUN pip3 install -U --no-cache-dir jupyterlab \
 
 # NGINX Proxy
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY 404.html 502.html /usr/share/nginx/html/
+COPY api.html 502.html /usr/share/nginx/html/
 
 # Copy the template-readme.md
 COPY template-readme.md /usr/share/nginx/html/README.md
