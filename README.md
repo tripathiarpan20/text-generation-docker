@@ -6,7 +6,7 @@
 * CUDA 11.8
 * Python 3.10.6
 * [Text Generation Web UI](
-  https://github.com/oobabooga/text-generation-webui) v1.2
+  https://github.com/oobabooga/text-generation-webui) v1.3
 * Torch 2.0.1
 * xformers 0.0.20
 
