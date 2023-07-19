@@ -85,14 +85,14 @@ RUN source /venv/bin/activate && \
     deactivate
 
 # Install AutoGPTQ, overwriting the version automatically installed by text-generation-webui
-#ARG AUTOGPTQ="0.2.2"
-#ENV CUDA_VERSION=""
-#ENV GITHUB_ACTIONS=true
-#ENV TORCH_CUDA_ARCH_LIST="8.0;8.6+PTX;8.9;9.0"
-#RUN source /venv/bin/activate && \
-#    pip3 uninstall -y auto-gptq && \
-#    pip3 install --no-cache-dir auto-gptq==${AUTOGPTQ} && \
-#    deactivate
+ARG AUTOGPTQ="0.3.0"
+ENV CUDA_VERSION=""
+ENV GITHUB_ACTIONS=true
+ENV TORCH_CUDA_ARCH_LIST="8.0;8.6+PTX;8.9;9.0"
+RUN source /venv/bin/activate && \
+    pip3 uninstall -y auto-gptq && \
+    pip3 install --no-cache-dir auto-gptq==${AUTOGPTQ} && \
+    deactivate
 
 # Install runpodctl
 RUN wget https://github.com/runpod/runpodctl/releases/download/v1.10.0/runpodctl-linux-amd -O runpodctl && \
