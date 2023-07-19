@@ -18,6 +18,7 @@ RUN apt update && \
     apt install -y --no-install-recommends \
         software-properties-common \
         python3.10-venv \
+        python3-pip \
         python3-dev \
         python3-tk \
         bash \
@@ -52,10 +53,8 @@ RUN apt update && \
 
 ENV PATH="/usr/local/cuda/bin:${PATH}"
 
-# Set Python and pip
-RUN ln -s /usr/bin/python3.10 /usr/bin/python && \
-    curl https://bootstrap.pypa.io/get-pip.py | python && \
-    rm -f get-pip.py
+# Set Python
+RUN ln -s /usr/bin/python3.10 /usr/bin/python
 
 # Stage 2: Install Web UI and python modules
 FROM base as setup
