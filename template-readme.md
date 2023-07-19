@@ -1,6 +1,6 @@
 ## Text Generation Web UI and API for running Large Language Models like LLaMA, llama.cpp, GPT-J, Pythia, OPT, and GALACTICA
 
-### Version 1.3.0
+### Version 1.3.1
 
 ### Included in this Template
 
@@ -8,7 +8,7 @@
 * CUDA 11.8
 * Python 3.10.6
 * [Text Generation Web UI](
-  https://github.com/oobabooga/text-generation-webui) v1.3
+  https://github.com/oobabooga/text-generation-webui) v1.3.1
 * Text Generation API
 * Torch 2.0.1
 
