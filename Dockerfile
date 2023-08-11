@@ -78,6 +78,7 @@ WORKDIR /text-generation-webui
 RUN source /venv/bin/activate && \
     pip3 install -r requirements.txt && \
     bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done' && \
+    pip3 uninstall -y exllama && \
     mkdir -p repositories && \
     cd repositories && \
     git clone https://github.com/turboderp/exllama && \
