@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG VERSION=v1.5
+ARG COMMIT=991bb57e439ccfbcd5a0f154957c98d2e3d66c35
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -70,7 +70,7 @@ RUN python3 -m venv /venv && \
 WORKDIR /
 RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd /text-generation-webui && \
-    git checkout ${VERSION}
+    git checkout ${COMMIT}
 
 # Install the dependencies for Text Generation Web UI
 # Including all extensions and exllama
@@ -86,7 +86,7 @@ RUN source /venv/bin/activate && \
     deactivate
 
 # Install AutoGPTQ, overwriting the version automatically installed by text-generation-webui
-ARG AUTOGPTQ="0.3.0"
+ARG AUTOGPTQ="0.4.1"
 ENV CUDA_VERSION=""
 ENV GITHUB_ACTIONS=true
 ENV TORCH_CUDA_ARCH_LIST="8.0;8.6+PTX;8.9;9.0"
@@ -108,14 +108,12 @@ RUN pip3 install -U --no-cache-dir jupyterlab \
         gdown
 
 # NGINX Proxy
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY api.html 502.html /usr/share/nginx/html/
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/api.html nginx/502.html /usr/share/nginx/html/
+COPY nginx/template-readme.md /usr/share/nginx/html/README.md
 
-# Copy the template-readme.md
-COPY template-readme.md /usr/share/nginx/html/README.md
-
-# Copy startup scripts for text-generation
-COPY start_chatbot_server.sh start_textgen_server.sh /text-generation-webui/
+# Copy startup script for Oobabooba Web UI
+COPY start_textgen_server.sh /text-generation-webui/
 
 # Set up the container startup script
 WORKDIR /
@@ -123,7 +121,6 @@ COPY pre_start.sh start.sh fix_venv.sh ./
 RUN chmod +x /start.sh && \
     chmod +x /pre_start.sh && \
     chmod +x /fix_venv.sh && \
-    chmod a+x /text-generation-webui/start_chatbot_server.sh && \
     chmod a+x /text-generation-webui/start_textgen_server.sh
 
 # Start the container
