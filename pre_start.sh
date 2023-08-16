@@ -17,7 +17,10 @@ echo "Fixing venv..."
 
 if [[ ${MODEL} ]];
 then
-  /workspace/text-generation-webui/
+    if [[ ! -e "/workspace/text-gen-model" ]];
+    then
+        /workspace/text-generation-webui/fetch_model.py "${MODEL}" /workspace/text-generation-webui/models >> /workspace/logs/download-model.log 2>&1
+    fi
 fi
 
 if [[ ${DISABLE_AUTOLAUNCH} ]];
@@ -29,10 +32,17 @@ then
     echo "   deactivate && source /workspace/venv/bin/activate"
     echo "   ./start_textgen_server.sh"
 else
+    ARGS=()
+
+    if [[ ${UI_ARGS} ]]; then
+    	  ARGS=("${ARGS[@]}" ${UI_ARGS})
+    fi
+
     mkdir -p /workspace/logs
     echo "Starting Oobabooga Text Generation Web UI"
     source /workspace/venv/bin/activate
-    cd /workspace/text-generation-webui && nohup ./start_textgen_server.sh > /workspace/logs/textgen.log 2>&1 &
+    cd /workspace/text-generation-webui/repositories/exllama && git pull
+    cd /workspace/text-generation-webui && nohup ./start_textgen_server.sh "${ARGS[@]}" > /workspace/logs/textgen.log 2>&1 &
     echo "Oobabooga Text Generation Web UI started"
     echo "Log file: /workspace/logs/textgen.log"
     deactivate

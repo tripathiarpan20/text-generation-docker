@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG COMMIT=991bb57e439ccfbcd5a0f154957c98d2e3d66c35
+ARG COMMIT=2a292082240527ba5c065e941811d82082b48b11
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -86,7 +86,7 @@ RUN source /venv/bin/activate && \
     deactivate
 
 # Install AutoGPTQ, overwriting the version automatically installed by text-generation-webui
-ARG AUTOGPTQ="0.4.1"
+ARG AUTOGPTQ="0.3.2"
 ENV CUDA_VERSION=""
 ENV GITHUB_ACTIONS=true
 ENV TORCH_CUDA_ARCH_LIST="8.0;8.6+PTX;8.9;9.0"
