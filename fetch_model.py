@@ -11,7 +11,7 @@ parser.add_argument('model', type=str)
 parser.add_argument('output_folder', type=str)
 args = parser.parse_args()
 
-SCRIPT_DIR = "/"
+SCRIPT_DIR = "/workspace/text-generation-webui"
 
 model = args.model.strip()
 output_folder = args.output_folder

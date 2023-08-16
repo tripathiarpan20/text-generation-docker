@@ -20,7 +20,9 @@ then
     if [[ ! -e "/workspace/text-gen-model" ]];
     then
         echo "Downloading model (${MODEL}), this could take some time, please wait..."
+        source /workspace/venv/bin/activate
         /workspace/text-generation-webui/fetch_model.py "${MODEL}" /workspace/text-generation-webui/models >> /workspace/logs/download-model.log 2>&1
+        deactivate
     fi
 fi
 
