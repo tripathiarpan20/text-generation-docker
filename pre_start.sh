@@ -15,6 +15,8 @@ rsync -au /text-generation-webui/ /workspace/text-generation-webui/
 echo "Fixing venv..."
 /fix_venv.sh /venv /workspace/venv
 
+mkdir -p /workspace/logs
+
 if [[ ${MODEL} ]];
 then
     if [[ ! -e "/workspace/text-gen-model" ]];
@@ -42,7 +44,6 @@ else
     	  ARGS=("${ARGS[@]}" ${UI_ARGS})
     fi
 
-    mkdir -p /workspace/logs
     echo "Starting Oobabooga Text Generation Web UI"
     source /workspace/venv/bin/activate
     cd /workspace/text-generation-webui/repositories/exllama && git pull
