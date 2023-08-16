@@ -73,16 +73,11 @@ RUN git clone https://github.com/oobabooga/text-generation-webui && \
     git checkout ${COMMIT}
 
 # Install the dependencies for Text Generation Web UI
-# Including all extensions and exllama
+# Including all extensions
 WORKDIR /text-generation-webui
 RUN source /venv/bin/activate && \
     pip3 install -r requirements.txt && \
     bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done' && \
-    pip3 uninstall -y exllama && \
-    mkdir -p repositories && \
-    cd repositories && \
-    git clone https://github.com/turboderp/exllama && \
-    pip3 install -r exllama/requirements.txt && \
     deactivate
 
 # Install runpodctl
