@@ -46,7 +46,6 @@ else
 
     echo "Starting Oobabooga Text Generation Web UI"
     source /workspace/venv/bin/activate
-    cd /workspace/text-generation-webui/repositories/exllama && git pull
     cd /workspace/text-generation-webui && nohup ./start_textgen_server.sh "${ARGS[@]}" > /workspace/logs/textgen.log 2>&1 &
     echo "Oobabooga Text Generation Web UI started"
     echo "Log file: /workspace/logs/textgen.log"
