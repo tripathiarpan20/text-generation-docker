@@ -7,8 +7,8 @@ echo "Container is running"
 echo "Syncing venv to workspace, please wait..."
 rsync -au /venv/ /workspace/venv/
 
-# Sync text-generation-webui to workspace to support Network volumes
-echo "Syncing text-generation-webui to workspace, please wait..."
+# Sync Oobabooga Text Generation Web UI to workspace to support Network volumes
+echo "Syncing Oobabooga Text Generation Web UI to workspace, please wait..."
 rsync -au /text-generation-webui/ /workspace/text-generation-webui/
 
 # Fix the venv to make it work from /workspace
@@ -19,6 +19,7 @@ if [[ ${MODEL} ]];
 then
     if [[ ! -e "/workspace/text-gen-model" ]];
     then
+        echo "Downloading model (${MODEL}), this could take some time, please wait..."
         /workspace/text-generation-webui/fetch_model.py "${MODEL}" /workspace/text-generation-webui/models >> /workspace/logs/download-model.log 2>&1
     fi
 fi
@@ -34,7 +35,8 @@ then
 else
     ARGS=()
 
-    if [[ ${UI_ARGS} ]]; then
+    if [[ ${UI_ARGS} ]];
+    then
     	  ARGS=("${ARGS[@]}" ${UI_ARGS})
     fi
 

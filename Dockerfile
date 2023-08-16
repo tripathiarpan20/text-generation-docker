@@ -100,6 +100,10 @@ COPY nginx/template-readme.md /usr/share/nginx/html/README.md
 # Copy startup script for Oobabooba Web UI
 COPY start_textgen_server.sh /text-generation-webui/
 
+# Copy scripts to download models
+COPY fetch_model.py /text-generation-webui/
+COPY download_model.py /text-generation-webui/
+
 # Set up the container startup script
 WORKDIR /
 COPY pre_start.sh start.sh fix_venv.sh ./
