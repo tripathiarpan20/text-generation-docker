@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG COMMIT=2a292082240527ba5c065e941811d82082b48b11
+ARG COMMIT=2cb07065ec6aa7064e8ce82b11572c6086f749f0
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -22,6 +22,7 @@ RUN apt update && \
         python3-dev \
         python3-tk \
         bash \
+        dos2unix \
         git \
         git-lfs \
         ncdu \
