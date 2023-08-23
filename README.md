@@ -17,6 +17,29 @@ You can use my custom [RunPod template](
 https://runpod.io/gsc?template=el5m58e1to&ref=2xxro4sy)
 to launch it on RunPod.
 
+## Running Locally
+
+### Install Nvidia CUDA Driver
+
+- [Linux](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html)
+- [Windows](https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html)
+
+### Start the Docker container
+
+```bash
+docker run -d \
+  --gpus all \
+  -v /workspace \
+  -p 3000:3001 \
+  -p 5000:5001 \
+  -p 5005:5006 \
+  -p 8888:8888 \
+  -e JUPYTER_PASSWORD=Jup1t3R! \
+  ashleykza/oobabooga:1.5.6
+```
+
+You can obviously substitute the image name and tag with your own.
+
 ## Community and Contributing
 
 Pull requests and issues on [GitHub](https://github.com/ashleykleynhans/text-generation-docker)
