@@ -63,7 +63,7 @@ start_jupyter() {
 
 start_nginx
 
-execute_script "/pre_start.sh" "Running pre-start script..."
+MODEL='TheBloke/WizardLM-13B-V1.1-GPTQ' execute_script "/pre_start.sh" "Running pre-start script..."
 
 echo "Pod Started"
 
