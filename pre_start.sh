@@ -17,10 +17,6 @@ echo "Fixing venv..."
 
 mkdir -p /workspace/logs
 
-#Downloading prompt templates
-wget -P /workspace/text-generation-webui/instruction-templates/ https://raw.githubusercontent.com/tripathiarpan20/self-improvement-4all/main/prompt%20templates/Template_recalled_dialogue_2.yaml && \
-wget -P /workspace/text-generation-webui/instruction-templates/ https://raw.githubusercontent.com/tripathiarpan20/self-improvement-4all/main/prompt%20templates/Template2.yaml
-
 if [[ ${MODEL} ]];
 then
     if [[ ! -e "/workspace/text-gen-model" ]];
