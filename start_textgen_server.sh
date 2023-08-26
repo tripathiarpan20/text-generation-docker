@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-ARGS=("$@" --listen --api --listen-port 3001 --api-blocking-port 5001 --api-streaming-port 5006)
+ARGS=("$@" --model_type llama --loader exllama --listen --api --listen-port 3001 --api-blocking-port 5001 --api-streaming-port 5006 )
 
 if [[ -f /workspace/text-gen-model ]];
 then
-  ARGS=("${ARGS[@]}" --model "$(</workspace/text-gen-model)")
+  ARGS=("${ARGS[@]}" --model "$(</workspace/text-gen-model)"  )
 fi
 
 source /workspace/venv/bin/activate
