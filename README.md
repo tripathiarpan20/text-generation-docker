@@ -4,11 +4,11 @@
 
 * Ubuntu 22.04 LTS
 * CUDA 11.8
-* Python 3.10.6
+* Python 3.10.12
 * [Text Generation Web UI](
   https://github.com/oobabooga/text-generation-webui)
 * Torch 2.0.1
-* xformers 0.0.20
+* xformers 0.0.21
 
 ## Available on RunPod
 

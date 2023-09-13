@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG COMMIT=df123a20fccda29439d70c5590de2e33937acbed
+ARG COMMIT=5e3d2f7d447700076fa66fb33f991d561da0a94b
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -99,7 +99,7 @@ COPY nginx/api.html nginx/502.html /usr/share/nginx/html/
 COPY nginx/template-readme.md /usr/share/nginx/html/README.md
 
 # Copy startup script for Oobabooba Web UI
-COPY start_textgen_server.sh /text-generation-webui/
+COPY --chmod=755 start_textgen_server.sh /text-generation-webui/
 
 # Copy scripts to download models
 COPY fetch_model.py /text-generation-webui/
@@ -107,11 +107,7 @@ COPY download_model.py /text-generation-webui/
 
 # Set up the container startup script
 WORKDIR /
-COPY pre_start.sh start.sh fix_venv.sh ./
-RUN chmod +x /start.sh && \
-    chmod +x /pre_start.sh && \
-    chmod +x /fix_venv.sh && \
-    chmod a+x /text-generation-webui/start_textgen_server.sh
+COPY --chmod=755 pre_start.sh start.sh fix_venv.sh ./
 
 # Start the container
 SHELL ["/bin/bash", "--login", "-c"]
