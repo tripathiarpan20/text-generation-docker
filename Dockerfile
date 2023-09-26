@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG COMMIT=ff5d3d2d092af726edbfd93ef774578416c4b2d2
+ARG OOBABOOGA_VERSION=1.6.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -71,7 +71,7 @@ RUN python3 -m venv /venv && \
 WORKDIR /
 RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd /text-generation-webui && \
-    git checkout ${COMMIT}
+    git checkout ${OOBABOOGA_VERSION}
 
 # Install the dependencies for Text Generation Web UI
 # Including all extensions
@@ -79,12 +79,26 @@ WORKDIR /text-generation-webui
 RUN source /venv/bin/activate && \
     pip3 install -r requirements.txt && \
     bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done' && \
+    mkdir -p repositories && \
+    cd repositories && \
+    git clone https://github.com/turboderp/exllama && \
+    pip3 install -r exllama/requirements.txt && \
     deactivate
+
+# Install rclone
+RUN curl https://rclone.org/install.sh | bash
 
 # Install runpodctl
 RUN wget https://github.com/runpod/runpodctl/releases/download/v1.10.0/runpodctl-linux-amd -O runpodctl && \
     chmod a+x runpodctl && \
     mv runpodctl /usr/local/bin
+
+# Install croc
+RUN curl https://getcroc.schollz.com | bash
+
+# Install speedtest CLI
+RUN curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash && \
+    apt install speedtest
 
 # Install Jupyter
 RUN pip3 install -U --no-cache-dir jupyterlab \
