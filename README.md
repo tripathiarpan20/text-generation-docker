@@ -1,14 +1,17 @@
-# Docker image for the Text Generation gradio web UI for running Large Language Models like LLaMA, llama.cpp, GPT-J, Pythia, OPT, and GALACTICA
+# Docker image for the Text Generation Web UI: A Gradio web UI for Large Language Models. Supports transformers, GPTQ, llama.cpp (GGUF), Llama models
 
 ## Installs
 
 * Ubuntu 22.04 LTS
 * CUDA 11.8
-* Python 3.10.6
+* Python 3.10.12
 * [Text Generation Web UI](
   https://github.com/oobabooga/text-generation-webui)
 * Torch 2.0.1
-* xformers 0.0.20
+* xformers 0.0.22
+* [runpodctl](https://github.com/runpod/runpodctl)
+* [croc](https://github.com/schollz/croc)
+* [rclone](https://rclone.org/)
 
 ## Available on RunPod
 
@@ -35,7 +38,7 @@ docker run -d \
   -p 5005:5006 \
   -p 8888:8888 \
   -e JUPYTER_PASSWORD=Jup1t3R! \
-  ashleykza/oobabooga:1.5.6
+  ashleykza/oobabooga:1.6.2
 ```
 
 You can obviously substitute the image name and tag with your own.
@@ -45,8 +48,8 @@ You can obviously substitute the image name and tag with your own.
 Pull requests and issues on [GitHub](https://github.com/ashleykleynhans/text-generation-docker)
 are welcome. Bug fixes and new features are encouraged.
 
-You can contact me and get help with deploying your Serverless
-worker to RunPod on the RunPod Discord Server below,
+You can contact me and get help with deploying your container
+to RunPod on the RunPod Discord Server below,
 my username is **ashleyk**.
 
 <a target="_blank" href="https://discord.gg/pJ3P2DbUUq">![Discord Banner 2](https://discordapp.com/api/guilds/912829806415085598/widget.png?style=banner2)</a>

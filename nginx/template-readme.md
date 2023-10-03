@@ -1,16 +1,20 @@
-## Text Generation Web UI and API for running Large Language Models like LLaMA, llama.cpp, GPT-J, Pythia, OPT, and GALACTICA
+## Text Generation Web UI: A Gradio web UI for Large Language Models. Supports transformers, GPTQ, llama.cpp (GGUF), Llama models
 
-### Version 1.5.0
+### Version 1.6.2
 
 ### Included in this Template
 
 * Ubuntu 22.04 LTS
 * CUDA 11.8
-* Python 3.10.6
+* Python 3.10.12
 * [Text Generation Web UI](
-  https://github.com/oobabooga/text-generation-webui) v1.5
+  https://github.com/oobabooga/text-generation-webui)
 * Text Generation API
 * Torch 2.0.1
+* xformers 0.0.22
+* [runpodctl](https://github.com/runpod/runpodctl)
+* [croc](https://github.com/schollz/croc)
+* [rclone](https://rclone.org/)
 
 ### Ports
 
@@ -46,7 +50,7 @@ tail -f /workspace/logs/textgen.log
 ### Jupyter Lab
 
 If you wish to use the Jupyter lab, you must set
-the `JUPYTER_PASSWORD` environment variable in the
+the **JUPYTER_PASSWORD** environment variable in the
 Template Overrides configuration when deploying
 your pod.
 
@@ -75,6 +79,6 @@ before that as the pod is still getting ready to be used.
 
 If you're done with the pod and would like to send
 things to Google Drive, you can use this colab to do it
-using `runpodctl`. You run the `runpodctl` either in
+using **runpodctl**. You run the **runpodctl** either in
 a web terminal (found in the pod connect menu), or
 in a terminal on the desktop.

@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG COMMIT=2b675533f75a9441c6ba8e52bd5b82b68eedf99c
+ARG OOBABOOGA_COMMIT=0197fdddf106270ccf77fc2757d7bc53cc9729d4
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -71,7 +71,7 @@ RUN python3 -m venv /venv && \
 WORKDIR /
 RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd /text-generation-webui && \
-    git checkout ${COMMIT}
+    git checkout ${OOBABOOGA_COMMIT}
 
 # Install the dependencies for Text Generation Web UI
 # Including all extensions
@@ -79,12 +79,26 @@ WORKDIR /text-generation-webui
 RUN source /venv/bin/activate && \
     pip3 install -r requirements.txt && \
     bash -c 'for req in extensions/*/requirements.txt ; do pip3 install -r "$req" ; done' && \
+    mkdir -p repositories && \
+    cd repositories && \
+    git clone https://github.com/turboderp/exllama && \
+    pip3 install -r exllama/requirements.txt && \
     deactivate
+
+# Install rclone
+RUN curl https://rclone.org/install.sh | bash
 
 # Install runpodctl
 RUN wget https://github.com/runpod/runpodctl/releases/download/v1.10.0/runpodctl-linux-amd -O runpodctl && \
     chmod a+x runpodctl && \
     mv runpodctl /usr/local/bin
+
+# Install croc
+RUN curl https://getcroc.schollz.com | bash
+
+# Install speedtest CLI
+RUN curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash && \
+    apt install speedtest
 
 # Install Jupyter
 RUN pip3 install -U --no-cache-dir jupyterlab \
@@ -99,7 +113,7 @@ COPY nginx/api.html nginx/502.html /usr/share/nginx/html/
 COPY nginx/template-readme.md /usr/share/nginx/html/README.md
 
 # Copy startup script for Oobabooba Web UI
-COPY start_textgen_server.sh /text-generation-webui/
+COPY --chmod=755 start_textgen_server.sh /text-generation-webui/
 
 # Copy scripts to download models
 COPY fetch_model.py /text-generation-webui/
@@ -107,11 +121,7 @@ COPY download_model.py /text-generation-webui/
 
 # Set up the container startup script
 WORKDIR /
-COPY pre_start.sh start.sh fix_venv.sh ./
-RUN chmod +x /start.sh && \
-    chmod +x /pre_start.sh && \
-    chmod +x /fix_venv.sh && \
-    chmod a+x /text-generation-webui/start_textgen_server.sh
+COPY --chmod=755 pre_start.sh start.sh fix_venv.sh ./
 
 # Start the container
 SHELL ["/bin/bash", "--login", "-c"]
