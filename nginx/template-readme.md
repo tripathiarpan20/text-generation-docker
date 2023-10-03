@@ -1,6 +1,6 @@
 ## Text Generation Web UI: A Gradio web UI for Large Language Models. Supports transformers, GPTQ, llama.cpp (GGUF), Llama models
 
-### Version 1.6.1
+### Version 1.6.2
 
 ### Included in this Template
 
@@ -8,10 +8,10 @@
 * CUDA 11.8
 * Python 3.10.12
 * [Text Generation Web UI](
-  https://github.com/oobabooga/text-generation-webui) 1.6.1
+  https://github.com/oobabooga/text-generation-webui)
 * Text Generation API
 * Torch 2.0.1
-* xformers 0.0.21
+* xformers 0.0.22
 * [runpodctl](https://github.com/runpod/runpodctl)
 * [croc](https://github.com/schollz/croc)
 * [rclone](https://rclone.org/)

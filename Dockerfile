@@ -1,7 +1,7 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-ARG OOBABOOGA_VERSION=1.6.1
+ARG OOBABOOGA_COMMIT=0197fdddf106270ccf77fc2757d7bc53cc9729d4
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -71,7 +71,7 @@ RUN python3 -m venv /venv && \
 WORKDIR /
 RUN git clone https://github.com/oobabooga/text-generation-webui && \
     cd /text-generation-webui && \
-    git checkout ${OOBABOOGA_VERSION}
+    git checkout ${OOBABOOGA_COMMIT}
 
 # Install the dependencies for Text Generation Web UI
 # Including all extensions
